@@ -1,6 +1,10 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			favorites: [],
+			characters: [],
+			planets: [],
+			starships: [],
 			demo: [
 				{
 					title: "FIRST",
@@ -20,9 +24,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+				fetch("https://www.swapi.tech/api/people/")
+					.then(function(response) {
+						if (!response.ok) {
+							throw Error(response.statusText);
+						}
+						return response.json();
+					})
+					.then(function(responseAsJson) {
+						setStore({ characters: responseAsJson.results });
+					})
+					.catch(function(error) {
+						console.log("Tienes una  problema", error);
+					});
+				fetch("https://www.swapi.tech/api/starships/")
+					.then(function(response) {
+						if (!response.ok) {
+							throw Error(response.statusText);
+						}
+						return response.json();
+					})
+					.then(function(responseAsJson) {
+						setStore({ starships: responseAsJson.results });
+					})
+					.catch(function(error) {
+						console.log("Tienes una  problema", error);
+					});
+				fetch("https://www.swapi.tech/api/planets/")
+					.then(function(response) {
+						if (!response.ok) {
+							throw Error(response.statusText);
+						}
+						return response.json();
+					})
+					.then(function(responseAsJson) {
+						setStore({ planets: responseAsJson.results });
+					})
+					.catch(function(error) {
+						console.log("Tienes una  problema", error);
+					});
 			},
 			changeColor: (index, color) => {
 				//get the store
